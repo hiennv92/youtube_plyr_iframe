@@ -146,7 +146,7 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
             if (uri.queryParameters.containsKey('v')) {
               controller.load(uri.queryParameters['v']!);
             }
-          } else {
+          } else if (feature != 'emb_rel_end') {
             return NavigationActionPolicy.ALLOW;
           }
           return NavigationActionPolicy.CANCEL;

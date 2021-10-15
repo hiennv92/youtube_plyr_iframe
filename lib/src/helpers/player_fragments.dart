@@ -12,7 +12,7 @@ String youtubeIFrameTag(YoutubePlayerController controller) {
     'rel': _boolean(!controller.params.strictRelatedVideos),
     'showinfo': '0',
     'iv_load_policy': '${controller.params.showVideoAnnotations ? 1 : 3}',
-    'modestbranding': '1',
+    'modestbranding': '0',
     'cc_load_policy': _boolean(controller.params.enableCaption),
     'cc_lang_pref': controller.params.captionLanguage,
     'start': '${controller.params.startAt.inSeconds}',
