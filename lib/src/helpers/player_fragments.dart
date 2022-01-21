@@ -124,6 +124,10 @@ function showTopMenu() {
   try { document.querySelector('#player').contentDocument.querySelector('.ytp-chrome-top').style.display = ''; } catch(e) { }
   return '';
 }
+function hideContextMenu() {
+  try { document.querySelector('#player').contentDocument.querySelector('.ytp-contextmenu').style.display = 'none'; } catch(e) {}
+  return '';
+}
 function hidePauseOverlay() {
   try {
   document.querySelector('#player').contentDocument.querySelector('.ytp-pause-overlay').style.display = 'none';
