@@ -124,6 +124,15 @@ function showTopMenu() {
   try { document.querySelector('#player').contentDocument.querySelector('.ytp-chrome-top').style.display = ''; } catch(e) { }
   return '';
 }
+function hideContextMenu(){
+  try {
+    var styleSheet = document.createElement("style")
+    styleSheet.type = "text/css"
+    styleSheet.innerText = `.ytp-contextmenu { display: none !important; }`
+    document.querySelector('#player').contentDocument.querySelector('head').appendChild(styleSheet);
+  } catch(e) {}
+  return '';
+}
 function hidePauseOverlay() {
   try {
   document.querySelector('#player').contentDocument.querySelector('.ytp-pause-overlay').style.display = 'none';

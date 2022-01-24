@@ -272,6 +272,8 @@ class YoutubePlayerController extends Stream<YoutubePlayerValue>
   /// Might violates Youtube's TOS. Use at your own risk.
   void hideTopMenu() => invokeJavascript('hideTopMenu()');
 
+  void hideContextMenu() => invokeJavascript('hideContextMenu()');
+
   /// Hides pause overlay i.e. related videos shown when player is paused.
   ///
   /// Might violates Youtube's TOS. Use at your own risk.

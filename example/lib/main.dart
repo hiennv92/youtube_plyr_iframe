@@ -49,6 +49,7 @@ class _YoutubeAppDemoState extends State<YoutubeAppDemo> {
     },
   ];
   double headerSize = 25;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -279,7 +280,9 @@ class _YoutubeAppDemoState extends State<YoutubeAppDemo> {
 
 class YoutubeViewer extends StatefulWidget {
   final String? videoID;
+
   YoutubeViewer(this.videoID);
+
   @override
   _YoutubeViewerState createState() => _YoutubeViewerState();
 }
@@ -311,7 +314,8 @@ class _YoutubeViewerState extends State<YoutubeViewer> {
           _controller
             ..hidePauseOverlay()
             ..play()
-            ..hideTopMenu();
+            ..hideTopMenu()
+            ..hideContextMenu();
         }
         if (value.hasPlayed) {
           _controller..hideEndScreen();
@@ -358,7 +362,9 @@ class _YoutubeViewerState extends State<YoutubeViewer> {
 
 class YoutubePlayer extends StatefulWidget {
   final String videoID;
+
   YoutubePlayer(this.videoID);
+
   @override
   _YoutubePlayerState createState() => _YoutubePlayerState();
 }
