@@ -116,7 +116,6 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
                 () => HorizontalDragGestureRecognizer(),
               ),
             },
-        onLongPressHitTestResult: (_, __) => controller.hideContextMenu(),
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
             userAgent: userAgent,
