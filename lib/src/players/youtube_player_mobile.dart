@@ -55,6 +55,9 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
   bool _isPlayerReady = false;
   bool _onLoadStopCalled = false;
 
+  String _jsString =
+      'document.addEventListener("contextmenu", event => event.preventDefault());';
+
   @override
   void initState() {
     super.initState();
@@ -147,7 +150,7 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
               controller.load(uri.queryParameters['v']!);
             }
           } else if (feature != 'emb_rel_end') {
-            return NavigationActionPolicy.ALLOW;
+            return NavigationActionPolicy.CANCEL;
           }
           return NavigationActionPolicy.CANCEL;
         },
@@ -178,6 +181,7 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
   Future<void> _callMethod(String methodName) async {
     final webController = await _webController.future;
     webController.evaluateJavascript(source: methodName);
+    webController.evaluateJavascript(_jsString);
   }
 
   void _addHandlers(InAppWebViewController webController) {

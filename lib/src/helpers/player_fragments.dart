@@ -23,7 +23,7 @@ String youtubeIFrameTag(YoutubePlayerController controller) {
     'hl': controller.params.interfaceLanguage,
     'loop': _boolean(controller.params.loop),
     if (controller.params.playlist.isNotEmpty)
-      'playlist': '${controller.params.playlist.join(',')}'
+      'playlist': '${controller.params.playlist.join(',')}',
   };
   final youtubeAuthority = controller.params.privacyEnhanced
       ? 'www.youtube-nocookie.com'
@@ -117,7 +117,16 @@ function isMuted() {
   return player.isMuted();
 }
 function hideTopMenu() {
-  try { document.querySelector('#player').contentDocument.querySelector('.ytp-chrome-top').style.display = 'none'; } catch(e) { }
+  hideElement(".ytp-chrome-top")
+}
+
+function hideElement(element) {
+  try {
+    var styleSheet = document.createElement("style")
+    styleSheet.type = "text/css"
+    styleSheet.innerText = `` + element + ` { display: none !important; }`
+    document.querySelector('#player').contentDocument.querySelector('head').appendChild(styleSheet);
+  } catch(e) {}
   return '';
 }
 function showTopMenu() {
@@ -125,36 +134,22 @@ function showTopMenu() {
   return '';
 }
 function hideContextMenu(){
-  try {
-    var styleSheet = document.createElement("style")
-    styleSheet.type = "text/css"
-    styleSheet.innerText = `.ytp-contextmenu { display: none !important; }`
-    document.querySelector('#player').contentDocument.querySelector('head').appendChild(styleSheet);
-  } catch(e) {}
-  return '';
+  hideElement(".ytp-contextmenu")
 }
 function hidePauseOverlay() {
-  try {
-  document.querySelector('#player').contentDocument.querySelector('.ytp-pause-overlay').style.display = 'none';
-  } catch(e) { }
-  return '';
+  hideElement(".ytp-pause-overlay")
 }
 function hideYoutubeOverlay() {
-  try { document.querySelector('#player').contentDocument.querySelector('.ytp-youtube-button').style.display = 'none'; } catch(e) { }
-  return '';
+  hideElement(".ytp-youtube-button")
 }
 function hideYoutubeLogo() {
-  try { document.querySelector('#player').contentDocument.querySelector('.ytp-youtube-button').style.display = 'none'; } catch(e) { }
-  return '';
+  hideElement(".ytp-watermark")
 }
 function hideEndScreen() {
-  try {
-  document.querySelector('#player').contentDocument.querySelector('.ytp-endscreen-content').style.display = 'none';
-  document.querySelector('#player').contentDocument.querySelector('.html5-endscreen').style.display = 'none';
-  document.querySelector('#player').contentDocument.querySelector('.ytp-endscreen-previous').style.display = 'none';
-  document.querySelector('#player').contentDocument.querySelector('.ytp-endscreen-next').style.display = 'none';
-  } catch(e) { }
-  return '';
+  hideElement(".ytp-endscreen-content")
+  hideElement(".html5-endscreen")
+  hideElement(".ytp-endscreen-previous")
+  hideElement(".ytp-endscreen-next")
 }
 ''';
 
