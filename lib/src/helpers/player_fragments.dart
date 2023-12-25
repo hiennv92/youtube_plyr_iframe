@@ -116,6 +116,70 @@ function stop() {
 function isMuted() {
   return player.isMuted();
 }
+
+function hideControls() {
+  try { 
+    const content = document.querySelector('#player').contentDocument;
+    const chromeControls = content.querySelector('.ytp-chrome-controls');
+    chromeControls.style.display = 'none'; 
+    chromeControls.style.opacity = '0'; 
+    const settingMenu = content.querySelector('.ytp-settings-menu');
+    settingMenu.style.display = 'none'; 
+    settingMenu.style.opacity = '0'; 
+    const progressBarContainer = content.querySelector('.ytp-progress-bar-container');
+    progressBarContainer.style.display = 'none'; 
+    progressBarContainer.style.opacity = '0'; 
+    progressBarContainer.style.pointerEvents = 'none'; 
+  } catch(e) { }
+  return '';
+}
+
+function getPlaybackQuality() {
+  return player.getPlaybackQuality();
+}
+
+function getAvailableQualityLevels() {
+  console.log(player.getAvailableQualityLevels());
+  return player.getAvailableQualityLevels();
+}
+
+function setPlaybackQuality(quality) {
+  try {
+    const content = document.querySelector('#player').contentDocument;
+    content.querySelector('.ytp-settings-button').click();
+    setTimeout(() => {
+      const qualityLevels = document.querySelector('#player').contentDocument.querySelectorAll('.ytp-menuitem-label');
+      var found = false;
+      qualityLevels.forEach((e) => {
+          if (e.innerHTML.includes('\(quality ?? "")')) {
+              e.click();
+              found = true;
+              return;
+          }
+      });
+      if (!found) {
+          content.querySelector('.ytp-settings-button').click();
+      }
+    }, 0);
+
+  } catch(e) {}
+}
+
+function toggleQualityMenu() {
+  try {
+    const content = document.querySelector('#player').contentDocument;
+    content.querySelector('.ytp-settings-button').click();
+    setTimeout(() => {
+        const items = content.querySelectorAll('.ytp-menuitem-label');
+        items.forEach((e) => {
+        if (e.innerHTML.includes('Chất lượng') || e.innerHTML.includes('Quality')) {
+            e.click();
+        }
+        });
+    }, 0);
+  } catch(e) {}
+}
+
 function hideTopMenu() {
   hideElement(".ytp-chrome-top")
 }
@@ -129,6 +193,7 @@ function hideElement(element) {
   } catch(e) {}
   return '';
 }
+
 function showTopMenu() {
   try { document.querySelector('#player').contentDocument.querySelector('.ytp-chrome-top').style.display = ''; } catch(e) { }
   return '';

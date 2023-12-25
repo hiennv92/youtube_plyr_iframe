@@ -3,17 +3,11 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:youtube_plyr_iframe/youtube_plyr_iframe.dart';
 
-import 'enums/player_state.dart';
-import 'enums/playlist_type.dart';
-import 'enums/thumbnail_quality.dart';
-import 'enums/youtube_error.dart';
-import 'meta_data.dart';
-import 'player_params.dart';
 import 'player_value.dart';
 
 /// Controls a youtube player, and provides updates when the state is changing.
@@ -29,6 +23,7 @@ class YoutubePlayerController extends Stream<YoutubePlayerValue>
     this.params = const YoutubePlayerParams(),
   }) {
     invokeJavascript = (_) async {};
+    invokeAsyncJavascript = (_, __) async {};
   }
 
   /// The Youtube video id for initial video to be loaded.
@@ -40,7 +35,10 @@ class YoutubePlayerController extends Stream<YoutubePlayerValue>
   /// Can be used to invokes javascript function.
   ///
   /// Ensure that the player is ready before using this.
-  late Future<void> Function(String function) invokeJavascript;
+  late Future<dynamic> Function(String function) invokeJavascript;
+
+  late Future<dynamic> Function(String function, Map<String, dynamic>? argument)
+      invokeAsyncJavascript;
 
   /// Called when player enters fullscreen.
   VoidCallback? onEnterFullscreen;
@@ -273,6 +271,51 @@ class YoutubePlayerController extends Stream<YoutubePlayerValue>
   void hideTopMenu() => invokeJavascript('hideTopMenu()');
 
   void hideContextMenu() => invokeJavascript('hideContextMenu()');
+
+  void hideControls() => invokeJavascript('hideControls()');
+
+  void toggleQualityMenu() => invokeJavascript('toggleQualityMenu()');
+
+  Future<dynamic> getPlaybackQuality() async =>
+      invokeJavascript('player.getPlaybackQuality()');
+
+  Future<dynamic> getAvailableQualityLevels() async =>
+      invokeJavascript('getAvailableQualityLevels()');
+
+  Future<dynamic> getPlayTime() async =>
+      invokeJavascript('player.getCurrentTime()');
+
+  void setPlaybackQuality(String quality) {
+    invokeAsyncJavascript('''
+    try {
+        const content = document.querySelector('#player').contentDocument;
+        content.querySelector('.ytp-settings-button').click();
+        setTimeout(() => {
+          const items = content.querySelectorAll('.ytp-menuitem-label');
+          items.forEach((e) => {
+            if (e.innerHTML.includes('Chất lượng') || e.innerHTML.includes('Quality')) {
+                e.click();
+            }
+          });
+          setTimeout(() => {
+            const qualityLevels = document.querySelector('#player').contentDocument.querySelectorAll('.ytp-menuitem-label');
+            var found = false;
+            qualityLevels.forEach((e) => {
+                if (e.innerHTML.includes('$quality')) {
+                    e.click();
+                    found = true;
+                    return;
+                }
+            });
+            if (!found) {
+                content.querySelector('.ytp-settings-button').click();
+            }
+          }, 0);
+        }, 0);
+
+      } catch(e) {}
+    ''', null);
+  }
 
   /// Hides pause overlay i.e. related videos shown when player is paused.
   ///

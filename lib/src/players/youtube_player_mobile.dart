@@ -159,6 +159,7 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
             _webController.complete(webController);
           }
           controller.invokeJavascript = _callMethod;
+          controller.invokeAsyncJavascript = _callAsyncMethod;
           _addHandlers(webController);
         },
         onLoadStop: (_, __) {
@@ -178,10 +179,17 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
     );
   }
 
-  Future<void> _callMethod(String methodName) async {
+  Future<dynamic> _callMethod(String methodName) async {
     final webController = await _webController.future;
-    webController.evaluateJavascript(source: methodName);
-    webController.evaluateJavascript(_jsString);
+    webController.evaluateJavascript(source: _jsString);
+    return webController.evaluateJavascript(source: methodName);
+  }
+
+  Future<dynamic> _callAsyncMethod(String functionBody,
+      Map<String, dynamic>? arguments) async {
+    final webController = await _webController.future;
+    return webController.callAsyncJavaScript(
+        functionBody: functionBody, arguments: arguments ?? {});
   }
 
   void _addHandlers(InAppWebViewController webController) {
