@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/rendering.dart';
 import 'package:youtube_plyr_iframe/youtube_plyr_iframe.dart';
@@ -316,6 +315,9 @@ class YoutubePlayerController extends Stream<YoutubePlayerValue>
       } catch(e) {}
     ''', null);
   }
+
+    Future<dynamic> getDuration() async =>
+      invokeJavascript('player.getDuration()');
 
   /// Hides pause overlay i.e. related videos shown when player is paused.
   ///
